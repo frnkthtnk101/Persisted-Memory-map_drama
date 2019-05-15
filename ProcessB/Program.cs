@@ -19,11 +19,15 @@ class Program
                 for (long i = 0; i < 1500000; i += colorSize)
                 {
                     accessor.Read(i, out color);
-                    color.Brighten(20);
+                    Console.Write(color.ToString());
+                    //color.Brighten(20);
                     accessor.Write(i, ref color);
+
                 }
             }
         }
+        Console.WriteLine("done");
+        Console.ReadKey();
     }
 }
 
@@ -41,5 +45,10 @@ public struct MyColor
         Green = (short)Math.Min(short.MaxValue, (int)Green + value);
         Blue = (short)Math.Min(short.MaxValue, (int)Blue + value);
         Alpha = (short)Math.Min(short.MaxValue, (int)Alpha + value);
+    }
+
+    public override string ToString()
+    {
+        return $"{Red}\t{Green}\t{Blue}\t{Alpha}\r\n";
     }
 }

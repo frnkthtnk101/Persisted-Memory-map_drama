@@ -11,23 +11,27 @@ class Program
         long length = 0x20000000; // 512 megabytes
 
         // Create the memory-mapped file.
-        using (var mmf = MemoryMappedFile.CreateFromFile(@"c:\ExtremelyLargeImage.data", FileMode.Open,"ImgA"))
+        using (var mmf = MemoryMappedFile.CreateFromFile(@"C:\Users\fpettigrosso\ExtremelyLargeImage.data", FileMode.Open,"ImgA",1000000000))
         {
             // Create a random access view, from the 256th megabyte (the offset)
             // to the 768th megabyte (the offset plus length).
             using (var accessor = mmf.CreateViewAccessor(offset, length))
             {
+                Random random = new Random();
                 int colorSize = Marshal.SizeOf(typeof(MyColor));
                 MyColor color;
-
                 // Make changes to the view.
                 for (long i = 0; i < length; i += colorSize)
                 {
+                    color.Alpha = (short) random.Next(255);
                     accessor.Read(i, out color);
-                    color.Brighten(10);
+                    //color.Brighten(10);
                     accessor.Write(i, ref color);
+
                 }
             }
+            Console.WriteLine("hello");
+            Console.ReadKey();
         }
     }
 }
